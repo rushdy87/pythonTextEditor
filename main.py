@@ -2,6 +2,24 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter import font
 
+# Functions
+fontsize = 12
+fontstyle = 'arial'
+
+
+def font_style(event):
+    global fontstyle
+    fontstyle = font_family_variable.get()
+    textArea.config(font=(fontstyle, fontsize))
+
+
+def font_size(event):
+    global fontsize
+    fontsize = size_variable.get()
+    textArea.config(font=(fontstyle, fontsize))
+
+
+# UI
 root = Tk()
 
 # Window configuration
@@ -36,21 +54,25 @@ menubar.add_cascade(label='Edit', menu=editmenu)
 show_toolbar = BooleanVar()
 show_statusbar = BooleanVar()
 viewmenu = Menu(menubar, tearoff=False)
-viewmenu.add_checkbutton(label='Tool Bar', variable=show_toolbar, onvalue=True, offvalue=False)
-viewmenu.add_checkbutton(label='Status Bar', variable=show_statusbar, onvalue=True, offvalue=False)
+viewmenu.add_checkbutton(
+    label='Tool Bar', variable=show_toolbar, onvalue=True, offvalue=False)
+viewmenu.add_checkbutton(
+    label='Status Bar', variable=show_statusbar, onvalue=True, offvalue=False)
 menubar.add_cascade(label='View', menu=viewmenu)
 
 # Themes menu
 thememenu = Menu(menubar, tearoff=False)
 theme_choice = StringVar()
 light_image = PhotoImage(file='images/light.gif')
-thememenu.add_radiobutton(label='Light', image=light_image, variable=theme_choice, compound=LEFT)
+thememenu.add_radiobutton(label='Light', image=light_image,
+                          variable=theme_choice, compound=LEFT)
 dark_image = PhotoImage(file='images/dark.gif')
-thememenu.add_radiobutton(label='Dark Default', image=dark_image, variable=theme_choice, compound=LEFT)
+thememenu.add_radiobutton(
+    label='Dark Default', image=dark_image, variable=theme_choice, compound=LEFT)
 menubar.add_cascade(label='Theme', menu=thememenu)
 
 # Toolbar section
-tool_bar = Label(root, background='#E8B4FF')
+tool_bar = Label(root)
 tool_bar.pack(side=TOP, fill=X)
 font_families = font.families()
 font_family_variable = StringVar()
@@ -65,32 +87,35 @@ font_size_combobox = Combobox(tool_bar, width=14, textvariable=size_variable, st
 font_size_combobox.current(4)
 font_size_combobox.grid(row=0, column=1, padx=5)
 
+font_family_combobox.bind('<<ComboboxSelected>>', font_style)
+font_size_combobox.bind('<<ComboboxSelected>>', font_size)
+
 # Buttons section
-bold_image = PhotoImage(file='images/bold.gif')
+bold_image = PhotoImage(file='images/bold.png')
 boldButton = Button(tool_bar, image=bold_image)
 boldButton.grid(row=0, column=2, padx=5)
 
-italic_image = PhotoImage(file='images/italic.gif')
+italic_image = PhotoImage(file='images/italic.png')
 italicButton = Button(tool_bar, image=italic_image)
 italicButton.grid(row=0, column=3, padx=5)
 
-underline_image = PhotoImage(file='images/underline.gif')
+underline_image = PhotoImage(file='images/underline.png')
 underlineButton = Button(tool_bar, image=underline_image)
 underlineButton.grid(row=0, column=4, padx=5)
 
-font_color_image = PhotoImage(file='images/font_color.gif')
+font_color_image = PhotoImage(file='images/font_color.png')
 font_colorButton = Button(tool_bar, image=font_color_image)
 font_colorButton.grid(row=0, column=5, padx=5)
 
-left_align_image = PhotoImage(file='images/left.gif')
+left_align_image = PhotoImage(file='images/left.png')
 left_alignButton = Button(tool_bar, image=left_align_image)
 left_alignButton.grid(row=0, column=6, padx=5)
 
-center_align_image = PhotoImage(file='images/center.gif')
+center_align_image = PhotoImage(file='images/center.png')
 center_alignButton = Button(tool_bar, image=center_align_image)
 center_alignButton.grid(row=0, column=7, padx=5)
 
-right_align_image = PhotoImage(file='images/right.gif')
+right_align_image = PhotoImage(file='images/right.png')
 right_alignButton = Button(tool_bar, image=right_align_image)
 right_alignButton.grid(row=0, column=8, padx=5)
 
