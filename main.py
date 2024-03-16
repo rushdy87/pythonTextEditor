@@ -80,19 +80,27 @@ underlineButton.grid(row=0, column=4, padx=5)
 
 font_color_image = PhotoImage(file='images/font_color.gif')
 font_colorButton = Button(tool_bar, image=font_color_image)
-font_colorButton.grid(row=0, column=4, padx=5)
+font_colorButton.grid(row=0, column=5, padx=5)
 
 left_align_image = PhotoImage(file='images/left.gif')
 left_alignButton = Button(tool_bar, image=left_align_image)
-left_alignButton.grid(row=0, column=4, padx=5)
+left_alignButton.grid(row=0, column=6, padx=5)
 
 center_align_image = PhotoImage(file='images/center.gif')
 center_alignButton = Button(tool_bar, image=center_align_image)
-center_alignButton.grid(row=0, column=4, padx=5)
+center_alignButton.grid(row=0, column=7, padx=5)
 
 right_align_image = PhotoImage(file='images/right.gif')
 right_alignButton = Button(tool_bar, image=right_align_image)
-right_alignButton.grid(row=0, column=4, padx=5)
+right_alignButton.grid(row=0, column=8, padx=5)
 
+scrollbar = Scrollbar(root)
+scrollbar.pack(side=RIGHT, fill=Y)
+textArea = Text(root, yscrollcommand=scrollbar.set, font=('arial', 12))
+textArea.pack(fill=BOTH, expand=True)
+scrollbar.config(command=textArea.yview)
+
+status_bar = Label(root, text='Status Bar')
+status_bar.pack(side=BOTTOM)
 
 root.mainloop()
