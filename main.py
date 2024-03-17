@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import font
+from tkinter import font, colorchooser
 
 # Functions
 fontsize = 12
@@ -40,7 +40,12 @@ def underline_text():
     if text_property['underline'] == 0:
         textArea.config(font=(fontstyle, fontsize, 'underline'))
     if text_property['underline'] == 1:
-        textArea.config(font=(fontstyle, fontsize, ))
+        textArea.config(font=(fontstyle, fontsize,))
+
+
+def color_select():
+    chosen_color = colorchooser.askcolor()
+    textArea.config(fg=str(chosen_color[1]))
 
 
 # UI
@@ -128,7 +133,7 @@ underlineButton = Button(tool_bar, image=underline_image, command=underline_text
 underlineButton.grid(row=0, column=4, padx=5)
 
 font_color_image = PhotoImage(file='images/font_color.png')
-font_colorButton = Button(tool_bar, image=font_color_image)
+font_colorButton = Button(tool_bar, image=font_color_image, command=color_select)
 font_colorButton.grid(row=0, column=5, padx=5)
 
 left_align_image = PhotoImage(file='images/left.png')
