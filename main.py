@@ -19,6 +19,30 @@ def font_size(event):
     textArea.config(font=(fontstyle, fontsize))
 
 
+def bold_text():
+    text_property = font.Font(font=textArea['font']).actual()
+    if text_property['weight'] == 'normal':
+        textArea.config(font=(fontstyle, fontsize, 'bold'))
+    if text_property['weight'] == 'bold':
+        textArea.config(font=(fontstyle, fontsize, 'normal'))
+
+
+def italic_text():
+    text_property = font.Font(font=textArea['font']).actual()
+    if text_property['slant'] == 'roman':
+        textArea.config(font=(fontstyle, fontsize, 'italic'))
+    if text_property['slant'] == 'italic':
+        textArea.config(font=(fontstyle, fontsize, 'roman'))
+
+
+def underline_text():
+    text_property = font.Font(font=textArea['font']).actual()
+    if text_property['underline'] == 0:
+        textArea.config(font=(fontstyle, fontsize, 'underline'))
+    if text_property['underline'] == 1:
+        textArea.config(font=(fontstyle, fontsize, ))
+
+
 # UI
 root = Tk()
 
@@ -92,15 +116,15 @@ font_size_combobox.bind('<<ComboboxSelected>>', font_size)
 
 # Buttons section
 bold_image = PhotoImage(file='images/bold.png')
-boldButton = Button(tool_bar, image=bold_image)
+boldButton = Button(tool_bar, image=bold_image, command=bold_text)
 boldButton.grid(row=0, column=2, padx=5)
 
 italic_image = PhotoImage(file='images/italic.png')
-italicButton = Button(tool_bar, image=italic_image)
+italicButton = Button(tool_bar, image=italic_image, command=italic_text)
 italicButton.grid(row=0, column=3, padx=5)
 
 underline_image = PhotoImage(file='images/underline.png')
-underlineButton = Button(tool_bar, image=underline_image)
+underlineButton = Button(tool_bar, image=underline_image, command=underline_text)
 underlineButton.grid(row=0, column=4, padx=5)
 
 font_color_image = PhotoImage(file='images/font_color.png')
