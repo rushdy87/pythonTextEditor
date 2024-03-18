@@ -48,6 +48,27 @@ def color_select():
     textArea.config(fg=str(chosen_color[1]))
 
 
+def align_right():
+    data = textArea.get(0.0, END)
+    textArea.tag_config('right', justify=RIGHT)
+    textArea.delete(0.0, END)
+    textArea.insert(INSERT, data, 'right')
+
+
+def align_left():
+    data = textArea.get(0.0, END)
+    textArea.tag_config('left', justify=LEFT)
+    textArea.delete(0.0, END)
+    textArea.insert(INSERT, data, 'left')
+
+
+def align_center():
+    data = textArea.get(0.0, END)
+    textArea.tag_config('center', justify=CENTER)
+    textArea.delete(0.0, END)
+    textArea.insert(INSERT, data, 'center')
+
+
 # UI
 root = Tk()
 
@@ -137,15 +158,15 @@ font_colorButton = Button(tool_bar, image=font_color_image, command=color_select
 font_colorButton.grid(row=0, column=5, padx=5)
 
 left_align_image = PhotoImage(file='images/left.png')
-left_alignButton = Button(tool_bar, image=left_align_image)
+left_alignButton = Button(tool_bar, image=left_align_image, command=align_left)
 left_alignButton.grid(row=0, column=6, padx=5)
 
 center_align_image = PhotoImage(file='images/center.png')
-center_alignButton = Button(tool_bar, image=center_align_image)
+center_alignButton = Button(tool_bar, image=center_align_image, command=align_center)
 center_alignButton.grid(row=0, column=7, padx=5)
 
 right_align_image = PhotoImage(file='images/right.png')
-right_alignButton = Button(tool_bar, image=right_align_image)
+right_alignButton = Button(tool_bar, image=right_align_image, command=align_right)
 right_alignButton.grid(row=0, column=8, padx=5)
 
 scrollbar = Scrollbar(root)
