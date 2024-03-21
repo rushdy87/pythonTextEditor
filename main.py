@@ -1,8 +1,72 @@
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import font, colorchooser
+from tkinter import font, colorchooser, filedialog, messagebox
+import os
 
 # Functions
+file_url = ''
+
+
+def new_file():
+    global file_url
+    file_url = ''
+    textArea.delete(0.0, END)
+
+
+def open_file():
+    global file_url
+    file_url = filedialog.askopenfilename(initialdir=str(os.getcwd), title='Select File',
+                                          filetypes=(('Text File', 'txt'), ('All files', '*.*')))
+    if file_url != '':
+        with open(file_url, 'r') as file:
+            textArea.insert(0.0, file.read())
+    root.title(os.path.basename(file_url))
+
+
+def save_file():
+    if file_url == '':
+        save_url = filedialog.asksaveasfile(mode='w', defaultextension='.txt',
+                                            filetypes=(('Text File', 'txt'), ('All files', '*.*')))
+
+        content = textArea.get(0.0, END)
+        save_url.write(content)
+        save_url.close()
+    else:
+        content = textArea.get(0.0, END)
+        with open(file_url, 'w') as file:
+            file.write(content)
+
+
+def save_as_file():
+    save_url = filedialog.asksaveasfile(mode='w', defaultextension='.txt',
+                                        filetypes=(('Text File', 'txt'), ('All files', '*.*')))
+    content = textArea.get(0.0, END)
+    save_url.write(content)
+    save_url.close()
+
+
+def exit_app():
+    if textArea.edit_modified():
+        result = messagebox.askyesnocancel('Save changes', 'Do you wont save the changes?')
+        if result is True:
+            content = textArea.get(0.0, END)
+            if file_url == '':
+                save_url = filedialog.asksaveasfile(mode='w', defaultextension='.txt',
+                                                    filetypes=(('Text File', 'txt'), ('All files', '*.*')))
+                save_url.write(content)
+                save_url.close()
+            else:
+                with open(file_url, 'w') as file:
+                    file.write(content)
+            root.destroy()
+        elif result is False:
+            root.destroy()
+        else:
+            pass
+    else:
+        root.destroy()
+
+
 fontsize = 12
 fontstyle = 'arial'
 
@@ -83,12 +147,12 @@ root.config(menu=menubar)
 
 # File menu
 filemenu = Menu(menubar, tearoff=False)
-filemenu.add_command(label='New', accelerator='Ctrl+N')
-filemenu.add_command(label='Open', accelerator='Ctrl+O')
-filemenu.add_command(label='Save', accelerator='Ctrl+S')
-filemenu.add_command(label='Save As', accelerator='Ctrl+Alt+S')
+filemenu.add_command(label='New', accelerator='Ctrl+N', command=new_file)
+filemenu.add_command(label='Open', accelerator='Ctrl+O', command=open_file)
+filemenu.add_command(label='Save', accelerator='Ctrl+S', command=save_file)
+filemenu.add_command(label='Save As', accelerator='Ctrl+Alt+S', command=save_as_file)
 filemenu.add_separator()
-filemenu.add_command(label='Exit', accelerator='Ctrl+Q')
+filemenu.add_command(label='Exit', accelerator='Ctrl+Q', command=exit_app)
 menubar.add_cascade(label='File', menu=filemenu)
 
 # Edit menu
