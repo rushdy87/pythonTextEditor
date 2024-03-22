@@ -44,9 +44,13 @@ def save_file(event=None):
 def save_as_file(event=None):
     save_url = filedialog.asksaveasfile(mode='w', defaultextension='.txt',
                                         filetypes=(('Text File', 'txt'), ('All files', '*.*')))
-    content = textArea.get(0.0, END)
-    save_url.write(content)
-    save_url.close()
+
+    if save_url is None:
+        pass
+    else:
+        content = textArea.get(0.0, END)
+        save_url.write(content)
+        save_url.close()
 
 
 def exit_app(event=None):
