@@ -200,6 +200,22 @@ def find():
     find_window.mainloop()
 
 
+def toolbar_handler():
+    if not show_toolbar.get():
+        tool_bar.pack_forget()
+    else:
+        textArea.pack_forget()
+        tool_bar.pack(fill=X)
+        textArea.pack(fill=BOTH, expand=1)
+
+
+def statusbar_handler():
+    if not show_statusbar.get():
+        status_bar.pack_forget()
+    else:
+        status_bar.pack(side=BOTTOM)
+
+
 # UI
 root = Tk()
 
@@ -295,9 +311,11 @@ show_toolbar = BooleanVar()
 show_statusbar = BooleanVar()
 viewmenu = Menu(menubar, tearoff=False)
 viewmenu.add_checkbutton(
-    label='Tool Bar', variable=show_toolbar, onvalue=True, offvalue=False)
+    label='Tool Bar', variable=show_toolbar, onvalue=True, offvalue=False, command=toolbar_handler)
+show_toolbar.set(True)
 viewmenu.add_checkbutton(
-    label='Status Bar', variable=show_statusbar, onvalue=True, offvalue=False)
+    label='Status Bar', variable=show_statusbar, onvalue=True, offvalue=False, command=statusbar_handler)
+show_statusbar.set(True)
 menubar.add_cascade(label='View', menu=viewmenu)
 
 # Themes menu
