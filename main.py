@@ -216,6 +216,10 @@ def statusbar_handler():
         status_bar.pack(side=BOTTOM)
 
 
+def change_theme(bg, fg):
+    textArea.config(bg=str(bg), fg=str(fg))
+
+
 # UI
 root = Tk()
 
@@ -323,10 +327,11 @@ thememenu = Menu(menubar, tearoff=False)
 theme_choice = StringVar()
 light_image = PhotoImage(file='images/light.gif')
 thememenu.add_radiobutton(label='Light', image=light_image,
-                          variable=theme_choice, compound=LEFT)
+                          variable=theme_choice, compound=LEFT, command=lambda: change_theme('white', 'black'))
 dark_image = PhotoImage(file='images/dark.gif')
 thememenu.add_radiobutton(
-    label='Dark Default', image=dark_image, variable=theme_choice, compound=LEFT)
+    label='Dark', image=dark_image, variable=theme_choice,
+    compound=LEFT, command=lambda: change_theme('black', 'white'))
 menubar.add_cascade(label='Theme', menu=thememenu)
 
 root.mainloop()
