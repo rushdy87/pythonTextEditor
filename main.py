@@ -167,8 +167,6 @@ def find():
         textArea.delete(0.0, END)
         textArea.insert(1.0, new_content)
 
-
-
     # GUI
     find_window = Toplevel()
     find_window.title('Find')
@@ -192,6 +190,12 @@ def find():
     find_btn.grid(row=2, column=0, padx=5, pady=5)
     replace_btn = Button(label_frame, text='Replace', command=replace_word)
     replace_btn.grid(row=2, column=1, padx=5, pady=5)
+
+    def handle_delete_window():
+        textArea.tag_remove('match', 0.0, END)
+        find_window.destroy()
+
+    find_window.protocol('WM_DELETE_WINDOW', handle_delete_window)
 
     find_window.mainloop()
 
