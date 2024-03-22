@@ -2,18 +2,19 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter import font, colorchooser, filedialog, messagebox
 import os
+import tempfile
 
 # Functions
 file_url = ''
 
 
-def new_file():
+def new_file(event=None):
     global file_url
     file_url = ''
     textArea.delete(0.0, END)
 
 
-def open_file():
+def open_file(event=None):
     global file_url
     file_url = filedialog.askopenfilename(initialdir=str(os.getcwd), title='Select File',
                                           filetypes=(('Text File', 'txt'), ('All files', '*.*')))
@@ -23,21 +24,24 @@ def open_file():
     root.title(os.path.basename(file_url))
 
 
-def save_file():
+def save_file(event=None):
     if file_url == '':
         save_url = filedialog.asksaveasfile(mode='w', defaultextension='.txt',
                                             filetypes=(('Text File', 'txt'), ('All files', '*.*')))
 
-        content = textArea.get(0.0, END)
-        save_url.write(content)
-        save_url.close()
+        if save_url is None:
+            pass
+        else:
+            content = textArea.get(0.0, END)
+            save_url.write(content)
+            save_url.close()
     else:
         content = textArea.get(0.0, END)
         with open(file_url, 'w') as file:
             file.write(content)
 
 
-def save_as_file():
+def save_as_file(event=None):
     save_url = filedialog.asksaveasfile(mode='w', defaultextension='.txt',
                                         filetypes=(('Text File', 'txt'), ('All files', '*.*')))
     content = textArea.get(0.0, END)
@@ -45,7 +49,7 @@ def save_as_file():
     save_url.close()
 
 
-def exit_app():
+def exit_app(event=None):
     if textArea.edit_modified():
         result = messagebox.askyesnocancel('Save changes', 'Do you wont save the changes?')
         if result is True:
@@ -65,6 +69,12 @@ def exit_app():
             pass
     else:
         root.destroy()
+
+
+def print_file(event=None):
+    text_file = tempfile.mktemp('.txt')
+    open(text_file, 'w').write(textArea.get(0.0, END))
+    os.startfile(text_file, 'print')
 
 
 def status_bar_function(event):
@@ -238,6 +248,7 @@ filemenu.add_command(label='New', accelerator='Ctrl+N', command=new_file)
 filemenu.add_command(label='Open', accelerator='Ctrl+O', command=open_file)
 filemenu.add_command(label='Save', accelerator='Ctrl+S', command=save_file)
 filemenu.add_command(label='Save As', accelerator='Ctrl+Alt+S', command=save_as_file)
+filemenu.add_command(label='Print', accelerator='Ctrl+P',  command=print_file)
 filemenu.add_separator()
 filemenu.add_command(label='Exit', accelerator='Ctrl+Q', command=exit_app)
 menubar.add_cascade(label='File', menu=filemenu)
@@ -333,5 +344,12 @@ thememenu.add_radiobutton(
     label='Dark', image=dark_image, variable=theme_choice,
     compound=LEFT, command=lambda: change_theme('black', 'white'))
 menubar.add_cascade(label='Theme', menu=thememenu)
+
+root.bind('<Control-o>', open_file)
+root.bind('<Control-n>', new_file)
+root.bind('<Control-s>', save_file)
+root.bind('<Control-Alt-s>', save_as_file)
+root.bind('<Control-p>', print_file)
+root.bind('<Control-q>', exit_app)
 
 root.mainloop()
