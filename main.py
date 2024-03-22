@@ -67,6 +67,15 @@ def exit_app():
         root.destroy()
 
 
+def status_bar_function(event):
+    if textArea.edit_modified():
+        words = len(textArea.get(0.0, END).split())
+        characters = len(textArea.get(0.0, 'end-1c').replace(' ', ''))
+        status_bar.config(text=f'Characters: {characters} Words: {words}')
+
+    textArea.edit_modified(False)
+
+
 fontsize = 12
 fontstyle = 'arial'
 
@@ -241,5 +250,7 @@ scrollbar.config(command=textArea.yview)
 
 status_bar = Label(root, text='Status Bar')
 status_bar.pack(side=BOTTOM)
+
+textArea.bind('<<Modified>>', status_bar_function)
 
 root.mainloop()
