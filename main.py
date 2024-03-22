@@ -159,7 +159,15 @@ def find():
                 start_position = end_position
 
     def replace_word():
-        pass
+        word = find_entry_field.get()
+        new_word = replace_entry_field.get()
+        content = textArea.get(1.0, END)
+        new_content = content.replace(word, new_word)
+
+        textArea.delete(0.0, END)
+        textArea.insert(1.0, new_content)
+
+
 
     # GUI
     find_window = Toplevel()
