@@ -142,6 +142,52 @@ def align_center():
     textArea.insert(INSERT, data, 'center')
 
 
+def find():
+    # functions
+    def find_word():
+        textArea.tag_delete('match')
+        start_position = '1.0'
+        word = find_entry_field.get()
+        if word:
+            while True:
+                start_position = textArea.search(word, start_position, stopindex=END)
+                if not start_position:
+                    break
+                end_position = f'{start_position}+{len(word)}c'
+                textArea.tag_add('match', start_position, end_position)
+                textArea.tag_config('match', foreground='red', background='yellow')
+                start_position = end_position
+
+    def replace_word():
+        pass
+
+    # GUI
+    find_window = Toplevel()
+    find_window.title('Find')
+    find_window.geometry("450x250+500+200")
+    find_window.resizable(False, False)
+
+    label_frame = LabelFrame(find_window, text='Find/Replace')
+    label_frame.pack(pady=50)
+
+    find_label = Label(label_frame, text='Find')
+    find_label.grid(row=0, column=0, padx=5, pady=5)
+    find_entry_field = Entry(label_frame)
+    find_entry_field.grid(row=0, column=1, padx=5, pady=5)
+
+    replace_label = Label(label_frame, text='Replace')
+    replace_label.grid(row=1, column=0, padx=5, pady=5)
+    replace_entry_field = Entry(label_frame)
+    replace_entry_field.grid(row=1, column=1, padx=5, pady=5)
+
+    find_btn = Button(label_frame, text='Find', command=find_word)
+    find_btn.grid(row=2, column=0, padx=5, pady=5)
+    replace_btn = Button(label_frame, text='Replace', command=replace_word)
+    replace_btn.grid(row=2, column=1, padx=5, pady=5)
+
+    find_window.mainloop()
+
+
 # UI
 root = Tk()
 
@@ -163,7 +209,6 @@ filemenu.add_command(label='Save As', accelerator='Ctrl+Alt+S', command=save_as_
 filemenu.add_separator()
 filemenu.add_command(label='Exit', accelerator='Ctrl+Q', command=exit_app)
 menubar.add_cascade(label='File', menu=filemenu)
-
 
 # Toolbar section
 tool_bar = Label(root)
@@ -229,8 +274,8 @@ editmenu = Menu(menubar, tearoff=False)
 editmenu.add_command(label='Cut', accelerator='Ctrl+X', command=lambda: textArea.event_generate('<Control x>'))
 editmenu.add_command(label='Copy', accelerator='Ctrl+C', command=lambda: textArea.event_generate('<Control c>'))
 editmenu.add_command(label='Paste', accelerator='Ctrl+V', command=lambda: textArea.event_generate('<Control v>'))
-editmenu.add_command(label='Clear', accelerator='Ctrl+Alt+X')
-editmenu.add_command(label='Find', accelerator='Ctrl+F')
+editmenu.add_command(label='Clear', accelerator='Ctrl+Alt+X', command=lambda: textArea.delete(0.0, END))
+editmenu.add_command(label='Find', accelerator='Ctrl+F', command=find)
 menubar.add_cascade(label='Edit', menu=editmenu)
 
 # View menu
